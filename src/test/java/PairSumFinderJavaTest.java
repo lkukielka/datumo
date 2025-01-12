@@ -25,9 +25,13 @@ public class PairSumFinderJavaTest {
         // then
         Map<PairSumFinderJava.Pair, Integer> result = countPairs(normalizePairs(actualPairs));
         Map<PairSumFinderJava.Pair, Integer> expectedResult = countPairs(normalizePairs(expectedPairs));
-        assertEquals(result.size(), expectedResult.size(), "Mismatch in pairs counts");
+        assertEquals(result.size(),
+                expectedResult.size(),
+                String.format("Mismatch in pairs counts for input: %s. Expected: %d, Actual: %d",
+                        inputList, expectedResult.size(), result.size()));
         result.forEach((pair, occur) ->
-                assertEquals(occur, expectedResult.get(pair), "Mismatch in pair occurances"));
+                assertEquals(occur, expectedResult.get(pair), String.format("Mismatch in occurrences for pair %s. Expected: %d, Actual: %d",
+                        pair, expectedResult.get(pair), occur)));
     }
 
     private List<Integer> parseInput(String input) {

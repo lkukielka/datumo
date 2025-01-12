@@ -10,15 +10,15 @@ public class PairSumFinderJava {
     public static List<Pair> findPairsWithSum(List<Integer> numbers) {
         List<Pair> result = new ArrayList<>();
 
-        Map<Integer, Integer> numberToOccurances = new HashMap<>();
-        numbers.forEach(num -> numberToOccurances.merge(num, 1, Integer::sum));
+        Map<Integer, Integer> numberToOccurrences = new HashMap<>();
+        numbers.forEach(num -> numberToOccurrences.merge(num, 1, Integer::sum));
 
         /*Szukamy par, więc iterujemy po liczbach całkowitych MAKSYMALNIE do połowy zbioru.
         W przypadku, gdy EXPECTED_SUM będzie nieparzyste wytarczy iterować do ilorazu
         zaokrąglonek w dół, zatem nie trzeba przejmować się częścią dziesiętną wyniku dzielenia.*/
         for (int i = 0; i <= EXPECTED_SUM / 2; i++) {
-            int firstNr = numberToOccurances.getOrDefault(i, 0);
-            int secondNr = numberToOccurances.getOrDefault(EXPECTED_SUM - i, 0);
+            int firstNr = numberToOccurrences.getOrDefault(i, 0);
+            int secondNr = numberToOccurrences.getOrDefault(EXPECTED_SUM - i, 0);
 
             if (firstNr > 0 && secondNr > 0) {
                 int occurrences = Math.min(firstNr, secondNr);

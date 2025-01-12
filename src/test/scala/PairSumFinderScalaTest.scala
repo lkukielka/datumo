@@ -2,44 +2,42 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.prop.TableDrivenPropertyChecks
 import scala.io.Source
+import scala.util.Using
 
 class PairSumFinderScalaTest extends AnyFunSuite with Matchers with TableDrivenPropertyChecks {
 
   import PairSumFinderScala._
 
   private def loadTestCases(): List[(List[Int], List[Pair])] = {
-    val source = Source.fromResource("test-cases.csv")
-    try {
-      source.getLines()
-        .drop(1)
-        .map { line =>
-          val Array(input, expected) = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", 2)
-          val inputList =
-            if (input.trim.isEmpty) List.empty[Int]
-            else input
-              .replaceAll("\"", "")
-              .split(",")
-              .filter(pairStr => !pairStr.isBlank)
-              .map(_.trim)
-              .map(_.toInt)
-              .toList
+      Using(Source.fromResource("test-cases.csv")) { source =>
+        source.getLines()
+          .drop(1)
+          .map { line =>
+            val Array(input, expected) = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", 2)
+            val inputList =
+              if (input.trim.isEmpty) List.empty[Int]
+              else input
+                .replaceAll("\"", "")
+                .split(",")
+                .filter(pairStr => !pairStr.isBlank)
+                .map(_.trim)
+                .map(_.toInt)
+                .toList
 
-          val expectedPairs =
-            if (expected.trim.isEmpty) List.empty[Pair]
-            else expected
-              .replaceAll("\"", "")
-              .trim.split(",")
-              .filter(pairStr => !pairStr.isBlank)
-              .map { pairStr =>
-                val Array(first, second) = pairStr.split(":")
-                Pair(first.toInt, second.toInt)
-              }.toList
+            val expectedPairs =
+              if (expected.trim.isEmpty) List.empty[Pair]
+              else expected
+                .replaceAll("\"", "")
+                .trim.split(",")
+                .filter(pairStr => !pairStr.isBlank)
+                .map { pairStr =>
+                  val Array(first, second) = pairStr.split(":")
+                  Pair(first.toInt, second.toInt)
+                }.toList
 
-          (inputList, expectedPairs)
-        }.toList
-    } finally {
-      source.close()
-    }
+            (inputList, expectedPairs)
+          }.toList
+      }.getOrElse(List.empty)
   }
 
   private lazy val testCases = loadTestCases()
