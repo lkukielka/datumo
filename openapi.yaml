@@ -1,0 +1,26 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost
+  description: Generated server url
+paths:
+  /:
+    get:
+      tags:
+      - controller
+      summary: Get a book by its id
+      operationId: hello
+      responses:
+        "404":
+          description: Book not found
+        "200":
+          description: Found the book
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid id supplied
+components: {}
